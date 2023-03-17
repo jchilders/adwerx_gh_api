@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class GithubRepositorySearch
+  include Concurrent::Async
   include Github
 
   try :search, catch: SocketError
@@ -19,6 +20,7 @@ class GithubRepositorySearch
       response = self.class.get(url)
       model_attrs = map_repo_json_to_model_attrs(response)
       attrs_ary.push(*model_attrs)
+      Rails.logger.info "Received #{attrs_ary.size} / #{response['total_count']} repositories from Github API"
 
       link_header = response.headers["link"]
       # The GH API stops returning "next" pages after 1000 items have been
@@ -37,7 +39,7 @@ class GithubRepositorySearch
       ary << {
         owner: item.dig("owner","login"),
         name: item["name"],
-        url: item["url"],
+        url: item["html_url"],
         stargazers_count: item["stargazers_count"]
       }
     end

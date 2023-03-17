@@ -3,8 +3,16 @@ class GithubRepositoriesController < ApplicationController
 
   # GET /github_repositories
   def index
-    @github_repositories = GithubRepository.all
+    @github_repositories = GithubRepository.all.order(:owner, :name)
     set_star_ranges
+  end
+ 
+  def refresh
+    quals = RepoQualifiersBuilder.new
+    url = "https://api.github.com/search/repositories?#{quals.to_params}"
+    GithubRepositorySearch.new.async.call(url)
+  
+    head :accepted
   end
 
   # GET /github_repositories/1
@@ -58,6 +66,11 @@ class GithubRepositoriesController < ApplicationController
     end
 
   def set_star_ranges
+    if GithubRepository.none?
+      @star_ranges = {}
+      return
+    end
+
     max_stars = GithubRepository.all.pluck(:stargazers_count).max
     max_stars = (max_stars/200.0).ceil * 200
 

@@ -4,17 +4,29 @@
   <% end %>
 
   <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Github repositories</h1>
-    <%= link_to 'New github repository', new_github_repository_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
+    <h1>GitHub Repositories</h1>
+    <%= button_to "Refresh Repositories", refresh_repositories_path, method: :post, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
+    <%= link_to "New github repository", new_github_repository_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
   </div>
 
-  <div>
-    <% @star_ranges.each do |star_range, num_stars| %>
-      <p><%= star_range.first %> to <%= star_range.last %> stars: <%= num_stars %> repositories</p>
-    <% end %>
-  </div>
+  <h2>Starred Repositiories Summary</h2>
+  <% @star_ranges.each do |star_range, num_stars| %>
+    <div><%= star_range.first %> to <%= star_range.last %> stars: <%= num_stars %> repositories</div>
+  <% end %>
 
   <div id="github_repositories" class="min-w-full">
-    <%= render @github_repositories %>
+    <table calss="min-w-full">
+      <thead class="border-b font-medium dark:border-neutral-500">
+        <tr>
+          <th scope="col" class="px-6 py-4">Name / Owner</th>
+          <th scope="col" class="px-6 py-4">Stars</th>
+          <th scope="col" class="px-6 py-4">GitHub Link</th>
+          <th scope="col" class="px-6 py-4">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render @github_repositories %>
+      </tbody>
+    </table>
   </div>
 </div>

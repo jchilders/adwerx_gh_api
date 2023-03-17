@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  h1 {
+    @apply font-bold text-4xl py-4 underline;
+  }
+  h2 {
+    @apply font-bold text-2xl;
+  }
+  a {
+    @apply text-blue-600 underline;
+  }
+}
+
 /*
 
 @layer components {
