@@ -1,8 +1,0 @@
----
-dsl:
-  workers: 10
-gem:
-  doc: true
-  workers: 10
-check_shims:
-  workers: 10
