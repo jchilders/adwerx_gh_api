@@ -10,5 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 0) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_16_201942) do
+  create_table "github_repositories", force: :cascade do |t|
+    t.string "owner"
+    t.string "name"
+    t.string "url"
+    t.integer "stargazers_count"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner", "name"], name: "index_github_repositories_on_owner_and_name", unique: true
+    t.index ["url"], name: "index_github_repositories_on_url", unique: true
+  end
+
 end

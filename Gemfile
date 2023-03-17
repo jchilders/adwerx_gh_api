@@ -110,3 +110,7 @@ Dir.glob(File.expand_path("../engines/*", __FILE__)).each do |path|
   engine = File.basename(path)
   gem engine, path: "engines/#{engine}", require: (ENV["ENGINE"].nil? || ENV["ENGINE"] == engine)
 end
+
+gem "dry-transaction", "~> 0.15.0"
+gem "dry-monads", "~> 1.6"
+gem "httparty"
