@@ -8,6 +8,12 @@
     <%= link_to 'New github repository', new_github_repository_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
   </div>
 
+  <div>
+    <% @star_ranges.each do |star_range, num_stars| %>
+      <p><%= star_range.first %> to <%= star_range.last %> stars: <%= num_stars %> repositories</p>
+    <% end %>
+  </div>
+
   <div id="github_repositories" class="min-w-full">
     <%= render @github_repositories %>
   </div>

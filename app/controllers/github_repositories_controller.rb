@@ -4,6 +4,7 @@ class GithubRepositoriesController < ApplicationController
   # GET /github_repositories
   def index
     @github_repositories = GithubRepository.all
+    set_star_ranges
   end
 
   # GET /github_repositories/1
@@ -55,4 +56,13 @@ class GithubRepositoriesController < ApplicationController
     def github_repository_params
       params.require(:github_repository).permit(:name, :owner, :url, :stars)
     end
+
+  def set_star_ranges
+    max_stars = GithubRepository.all.pluck(:stargazers_count).max
+    max_stars = (max_stars/200.0).ceil * 200
+
+    @star_ranges = (1..max_stars).each_slice(200).with_object({}) do |rng, hash|
+      hash[rng.first..rng.last] = GithubRepository.where(stargazers_count: rng.first..rng.last).count
+    end
+  end
 end
